@@ -1,0 +1,94 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.overlay {
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color:rgba(0, 0, 0, 0);
+    z-index:9999;
+    color:white;
+}
+.overlay:hover {
+    background-color:rgba(0, 0, 0, 0.1);
+}
+
+.search {
+  display: table;
+  max-width: 89%;
+  min-width: 75%;
+  height: 50px;
+  text-align: center;
+  float: right;
+  color: white;
+  position: inherit;
+}
+
+.search-input{
+  display: table-cell;
+  vertical-align: middle;
+  height: 50px;
+}
+
+.search-input > div {
+    display: inline-block;
+}
+
+
+.search-index > span {
+    display: inline-block;
+}
+.search-index > select{
+    display: inline-block;
+    width: auto;
+}
+.search-keyword > input {
+    display: inline-block;
+    width: 180px;
+}
+.currency-change > select{
+    display: inline-block;
+    width: 80px;
+}

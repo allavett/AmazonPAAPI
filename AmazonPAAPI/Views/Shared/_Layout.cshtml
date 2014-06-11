@@ -1,0 +1,65 @@
+﻿@model AmazonPAAPI.Models.ItemSearch
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Amazon PAAPI</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <script type="text/javascript" language="javascript" src="~/Scripts/currency_converter.js"></script>
+</head>
+<body>
+    
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Amazon PAAPI", "Index", "ItemSearch", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <div class="search">
+                    <form class="search-input" action="/ItemSearch/Search">
+                        <div class="search-index">
+                            <span>Category </span>
+                            <select class="form-control" name="searchIndex">
+                                @for (int i = 0; i < @Globals.SEARCH_INDEX_VALUES.Count; i++)
+                                {
+                                    <option value="@Globals.SEARCH_INDEX_VALUES[i]">@Globals.SEARCH_INDEX_VALUES[i]</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="search-keyword">
+                            <span>Keyword </span>
+                            <input class="form-control" type="text" name="searchKeywords" />
+                            <input class="btn btn-success" style="width: 80px" type="submit" value="Search" />
+                        </div>
+                        <div class="currency-change">
+                            <span>Change currency to </span>
+                            <input type="hidden" value="@Globals.OPENEXCHANGERATE_APP_ID" id="app-id" />
+                            <select class="form-control" id="currency" onchange="selectCurrency()"></select>
+                        </div>
+                    </form>
+                </div>            
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">        
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Amazon PAAPI -- Allar Vendla</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

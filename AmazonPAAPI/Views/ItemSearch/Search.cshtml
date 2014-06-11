@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Search";
+}
+
+@if (Model.ErrorMessage() != null)
+{
+    <header>
+        <div style="text-align:center">
+            <h3>@Model.ErrorMessage()</h3>
+        </div>
+    </header>
+}
+else
+{
+    <header>
+        <div style="text-align:center">
+            <h2>Search results</h2>
+            <ul class="pagination">
+                @for (int i = 0; i < Model.PageCount(); i++)
+                {
+                    if ((i + 1) != Model.PageNr())
+                    {
+                        <li>
+                            <a href="Search?searchIndex=@Model.SearchIndex()&searchKeywords=@Model.SearchKeywords()&pageNr=@(i + 1)">@(i + 1)</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="active"><a href="#">@Model.PageNr()</a></li>
+                    }
+                }
+            </ul>
+        </div>
+    </header>
+    <div class="row">
+        @for (int i = 0; i < Model.Items().Count; i++)
+        {
+            var item = Model.Items()[i];
+            string price = null;
+            if (item.LowestPriceInt != null)
+            {
+                price = string.Format("{0:0.00}", item.LowestPriceInt);
+                price = price.Replace(",", ".");
+            }
+            else
+            {
+                price = item.LowestPriceStr;
+            };
+            string newTitle = item.Title;
+
+            if (item.Title.Length > 30)
+            {
+                var shortTitle = item.Title.Substring(0, 30);
+                newTitle = shortTitle + "...";
+            }
+
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail" onclick="window.open('@item.ItemURL')" style="cursor:pointer">
+                    <img src="@item.ImageURL" alt="@item.ASIN">
+                    <div class="caption" style="text-align:center">
+                        <h4>@newTitle</h4>
+                        <div class="amount" style="text-align:center">
+                            <input type="hidden" class="currency" value="@item.CurrencyCode">
+                            <input type="hidden" class="original" value="@price">
+                            <span>@item.CurrencyCode @price</span>
+                        </div>
+                        <br />
+                        <p>Item #@(Model.ItemIndex() + i + 1)</p>
+                        <div class="overlay"></div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div style="text-align:center">
+        <ul class="pagination">
+            @for (int i = 0; i < Model.PageCount(); i++)
+            {
+                if ((i + 1) != Model.PageNr())
+                {
+                    <li>
+                        <a href="Index?searchIndex=@Model.SearchIndex()&searchKeywords=@Model.SearchKeywords()&pageNr=@(i + 1)">@(i + 1)</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="active"><a href="#">@Model.PageNr()</a></li>
+                }
+            }
+        </ul>
+    </div>
+}
