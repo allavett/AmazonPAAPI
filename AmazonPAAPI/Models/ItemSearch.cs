@@ -20,9 +20,13 @@ namespace AmazonPAAPI.Models
             }
             _pageNr = pageNr;
             _totalResults = TotalItemResults(_searchIndex, _searchKeywords);
-            if (_totalResults == 0)
+            if (_totalResults == 0 && _errorMessage == null)
             {
                 _errorMessage = "No items match with keyword "+'"'+_searchKeywords+'"'+"!";
+                return;
+            }
+            else if (_totalResults == 0 && _errorMessage != null)
+            {
                 return;
             }
             if (_totalResults > 50 && _searchIndex == "All") { _totalResults = 50; }
@@ -199,21 +203,29 @@ namespace AmazonPAAPI.Models
             r2["Keywords"] = searchKeywords;
 
             string requestUrl = helper.Sign(r2);
-            
-            WebRequest request = HttpWebRequest.Create(requestUrl);
-            WebResponse response = request.GetResponse();
-
-            XmlDocument doc = new XmlDocument();
-            doc.Load(response.GetResponseStream());
-
-            XmlNode node = doc.GetElementsByTagName("Items")[0];
-            _totalResults = 0;
-            _totalResults = int.Parse(node["TotalResults"].InnerText, null);
-            if (_totalResults >= 100)
+            try
             {
-                _totalResults = 100;
+                WebRequest request = HttpWebRequest.Create(requestUrl);
+                WebResponse response = request.GetResponse();
+
+                XmlDocument doc = new XmlDocument();
+                doc.Load(response.GetResponseStream());
+
+                XmlNode node = doc.GetElementsByTagName("Items")[0];
+                _totalResults = 0;
+                _totalResults = int.Parse(node["TotalResults"].InnerText, null);
+                if (_totalResults >= 100)
+                {
+                    _totalResults = 100;
+                }
+                return _totalResults;
             }
-            return _totalResults;
+            catch
+            {
+                _totalResults = 0;
+                _errorMessage = "Are you sure you followed the <b>README.md</b> correctly?";
+                return _totalResults;
+            }
         }   
         
         public List<Item> Items()
